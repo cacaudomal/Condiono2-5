@@ -60,7 +60,7 @@ conductivity.calc_prelativa_all(iriteste.iridata.data["O+"],
                         iriteste.iridata.data["Ne"])
 
 # #Alining Data by putting everything in a same Data Frame
-conductivity.calcvaluesdf = gyrofreq.result.join(freqc.resul.copy(),
+conductivity.calcvaluesdf = gyrofreq.result.join(freqc.result.copy(),
                           how = 'inner') #inner para ficarem só as coordenadas que ambos dataframes tem
 
 # #= Ordering multiindex of conductivity data
@@ -106,17 +106,16 @@ print("d2")
 #calculating height integrated data for a given day
 
 h = 100
-hintegratedHall = conductivity.calc_height_integrated_conductivity(conductivity.CondH.loc['0 days 00:00:00',:,:,:].dropna(),h)
+hintegratedHall = conductivity.calc_height_integrated_conductivity(conductivity.CondH.loc[:,:,:,'0 days 00:00:00'].dropna(),h)
 
 # #==== Plotting
 
 # when = 0 
 
-
-gyrofreq.plot_gyrmap(gyrofreq.result,h=h, localscope=True, savemap = True,filename="gyrofrequency_clara_teste")
-
-conductivity.plot_2dgrid(conductivity.CondH.loc['0 days 00:00:00',:,:,:].dropna(),h,'Hall Conductivity at ' + str(h) + " km altitude" )
-conductivity.plot_2dgrid(conductivity.CondP.loc['0 days 00:00:00',:,:,:].dropna(),h,'Pedersen Conductivity at ' + str(h) + " km altitude" )
+gyrofreq.plot_gyrmap(gyrofreq.result,h=h,time="2008", localscope=True, savemap = True,filename="gyrofrequency_clara_teste")
+6
+conductivity.plot_2dgrid(conductivity.CondH.loc[:,:,:,'0 days 00:00:00'].dropna(),h,'Hall Conductivity at ' + str(h) + " km altitude" )
+conductivity.plot_2dgrid(conductivity.CondP.loc[:,:,:,'0 days 00:00:00'].dropna(),h,'Pedersen Conductivity at ' + str(h) + " km altitude" )
 
 #conductivity.plot_2dgrid_hintegrated2(hintegratedHall,title = ' Height integratred Halls conductivity at ' + str(h) + " km altitude")
 #(, h,'Height integratred conductivity at ' + str(h) + " km altitude")
