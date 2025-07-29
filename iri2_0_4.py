@@ -183,16 +183,14 @@ class iri():
 
         """
         plt.figure(figsize=(5,5))
-        plt.plot(ne,h,label = "$N_e$ "+data)
+        plt.semilogx(ne,h,label = "$N_e$ "+data)
         plt.xlabel("Densidade de elétrons ($m^{-3}$)")
         plt.ylabel("Altura (km)")
        
         plt.title("Densidade de elétrons \n " + data)
         
-        #plt.xlim(left=10e5)
         plt.legend()
         plt.grid()
-        #$plt.xscale('log',base=10)
        
         plt.show()
     
@@ -215,21 +213,23 @@ class iri():
         
 #============================================        
         
-class irincdf():
-    def __init__(self,filename):
-        self.iridata = self._read(filename) 
-        pass
+# class irincdf():
+#     def __init__(self,filename):
+#         self.iridata = self._read(filename) 
+#         pass
     
-    def _read(self,filename):
-        d = {}
-        for i in ["O+","N+","H+","He+","O2+","NO+","Ne","Tn","Ti","Te"]:
-            d[i] = rn.basencdf(filename, i)
+#     def _read(self,filename):
+#         d = {}
+#         for i in ["O+","N+","H+","He+","O2+","NO+","Ne","Tn","Ti","Te"]:
+#             d[i] = rn.basencdf(filename, i)
             
-        return d
+#         return d
     
     
-filename = "IRI.3D.2008001.nc"
-iri(filename)
+# filename = "IRI.3D.2008001.nc"
+# iri(filename)
+
+
 #unitname = "Ne"
 
 #b = irincdf(filename)

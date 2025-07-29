@@ -55,21 +55,19 @@ class irincdf():
         None.
 
         """
-        fig = plt.figure
-        plt.figure(figsize=(5,5))
+        fig = plt.figure(figsize=(5,5))
+        
         plt.plot(ne,h,label = "$N_e$ "+data)
         plt.xlabel("Densidade de elétrons ($m^{-3}$)")
         plt.ylabel("Altura (km)")
        
         plt.title("Densidade de elétrons \n " + data)
         
-        #plt.xlim(left=10e5)
         plt.legend()
         plt.grid()
-        #$plt.xscale('log',base=10)
        
         plt.show()
-        fig.savefig("plot_" + data +'.png', dpi = 300, transparent=True())
+        fig.savefig("plot_" + data +'.png', dpi = 300, transparent=True)
 #=================
 
         

@@ -15,11 +15,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-#import pyigrf_clara_0_4 as igrf
 import freqcol_0_6 as fc
 import geopandas as gpd
-#import msise2
-#import iri2_0_4 as iri
+
 
 class gyrofrequency():
     def __init__(self,B):
@@ -102,25 +100,6 @@ class gyrofrequency():
         
         return girofreq
    
-          
-    # def plot_gyrfreq(self,girofreq):
-        
-    #     #h = self.msise2.data["H(km)"]
-        
-    #     plt.figure(figsize=(5,5))
-
-    #     #plt.plot(self.girofreq["we"],h,label="we")
-    #     plt.plot(self.girofreq["wi1"],h,label="wi1")
-    #     plt.plot(self.girofreq["wi2"],h,label="wi2")
-
-    #     plt.title("girofrequencias com a altura (km)")
-    #     plt.ylabel("Height (km)")
-    #     plt.xlabel("$log_{10}$ Frequência de Ciclotron (Hz)")
-    #     plt.legend()
-    #     #plt.xscale('log')  
-
-    #     plt.grid()
-    #     plt.show()
 
     def plot_gyrmap(self,datatoplot, h, time=" ", localscope=True, savemap = False,filename="gyrofrequency"):
         """
@@ -255,13 +234,14 @@ class condiono_adachi():
         rhoi2 : FLOAT
             densidade do íon O+ [m^-3]    
         """   
-        #densidade do íon ficticio 1 [m^-3]
+        #density of íon ficticio 1 [m^-3]
         rhoi1 = (rho_íonNO + rho_íonO2)/ne
         #print(self.h[i],"rho1",rhoi1,"m^-3")
     
-        #densidade do íon O+ [m^-3]
+        #density of íon O+ [m^-3]
         rhoi2 = rho_íonO/ne
         #print("rhoi2",rhoi2,"m^-3\n")
+        
         return rhoi1, rhoi2
         
     
@@ -351,27 +331,25 @@ class condiono_adachi():
 
         Parameters
         ----------
-        fen : PANDA SERIES
+        fen : PANDAS SERIES
             frequência de colisão dos elétrons com as partículas neutras [Hz].
-        fin1 : PANDA SERIES
+        fin1 : PANDAS SERIES
             frequência de colisão do íon 1 com as partículas neutras [Hz].
-        fin2 : PANDA SERIES
+        fin2 : PANDAS SERIES
             frequência de colisão do íon O+ com as partículas neutras [Hz].
-        wi1 : PANDA SERIES
+        wi1 : PANDAS SERIES
             girofrequencia do íon 1 [Hz].
-        wi2 : TYPE
+        wi2 : PANDAS SERIES
             girofrequência do íon O+ [Hz].
-        we : TYPE
+        we : PANDAS SERIES
             DESCRIPTION.
-        p1 : TYPE
+        p1 : PANDAS SERIES
             DESCRIPTION.
-        p2 : TYPE
+        p2 : PANDAS SERIES
             DESCRIPTION.
-        ne : TYPE
+        ne : PANDAS SERIES
             DESCRIPTION.
-        B : TYPE
-            DESCRIPTION.
-        rho_íonNO : TYPE
+        B : PANDAS SERIES
             DESCRIPTION.
 
         Returns
@@ -450,33 +428,10 @@ class condiono_adachi():
             
         return X,Y,value2dformat
     
-    # def prepplot_valueto2Dgrid(values,h):
-    #     value2dformat = pd.DataFrame([])
-    #     values_plot = values.loc[h].reset_index() #leaving the multindex to use normal indexing
-        
-    #     for i in values_plot['lon'].unique():
-    #         value2dformat[i] = values.loc[h,:,i]
-    #         #print('\n\n i',i,'\nvalues2dformat[i]\n',value2dformat[i],'\n\n values.loc[]',values.loc[h,:,i])
-        
-    #     return value2dformat
-
-    # def prepplot_creat2Dgrid(values,h):
-    #     values_plot = values.loc[h].reset_index() #leaving the multindex to use normal indexing
-        
-    #     X,Y = np.meshgrid(values_plot['lon'].unique() - 180, values_plot['lat'].unique())
-        
-    #     return X,Y
-    
     def plot_2dgrid(self,values,h,title=" ") -> None:
         sizefig = (10,15)
         #values_plot = values.loc[h].reset_index() #leaving the multindex to use normal indexing
         countries = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
-    
-        # X,Y = np.meshgrid(values_plot['lon'].unique() - 180,values_plot['lat'].unique())
-    
-        # value2dformat = pd.DataFrame([])
-        # for i in values_plot['lon'].unique():
-        #     value2dformat[i] = values.loc[h,:,i]
         
         X,Y,value2dformat = self._prepplot_2dgrid(values,h)
         
@@ -496,7 +451,8 @@ class condiono_adachi():
         
         fig.colorbar(cntr, ax=ax, label='conductivity [S/m]',location = 'bottom')
 
-    def calc_height_integrtated_conductivity(self,values,h=400):
+
+    def calc_height_integrated_conductivity(self,values,h=400):
           '''
           CALCULATES HEIGHT INTEGRATED VALUES.
 
@@ -558,7 +514,6 @@ class condiono_adachi():
           contour = ax.contour(X,Y,value2dformat,colors = 'black', linewidths=0.5)
           ax.clabel(contour, inline = True, fontsize = 8)
       
-          #countries.plot(ax=ax,color = "white",figsize=sizefig, alpha = 0.2)
           countries.plot(ax=ax,color = "white", alpha = 0.2)
           ax.set_title(title)
           ax.set_xlabel("Longitude")
