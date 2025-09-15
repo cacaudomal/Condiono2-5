@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 
 class freqcol():
     """
-    Classe para calcular as frequências de colisão dadas segundo Adachi et. al. 2017.
+    Class for calculating the collision frequencies given by Adachi et. al. 2017.
     
     ...
     
@@ -29,17 +29,17 @@ class freqcol():
     Attributes
     ----------
     nN2 : LIST FLOAT
-        densidade de N2, [m^3] NRLMSISE2
+        density of N2, [m^3] NRLMSISE2
     nO2 : LIST FLOAT
-        densidade de O2 [m^3] NRLMSISE2
+        density of O2 [m^3] NRLMSISE2
     nO : LIST FLOAT
-        densidade de O [m^3] NRLMSISE2    
+        density of O [m^3] NRLMSISE2    
     Ti : PANDA SERIES
-        TEMPERATURA DOS ÍONS EM [K].
+        ION TEMPERATURE [K].
     Tn : PANDA SERIES
-        TEMPERATURA DAS PARTÍCULAS NEUTRAS EM [K].
+        NEUTRALS TEMPERATURE [K].
     h : PANDA SERIES
-        ALTURAS NAS QUAIS OS VALORES SERÃO CALCULADOS [km].
+        HEIGHT FOR WHICH THE VALUES WILL BE CALCULATED [km].
         
     Methods
     ----------
@@ -57,15 +57,15 @@ class freqcol():
     
     def calc_Tr(self,Ti,Tn):
         """
-        CRIA UMA PANDA SERIE COM OS VALORES DA TEMPERATURA RELATIVA E PREENCHE SEUS VALORES.
+        CREATES A PANDAS SERIES WITH THE RELATIVE TEMPERATURE VALUES AND FILLS IT. 
 
         Parameters
         ----------
         Ti : PANDA SERIES
-            TEMPERATURA DOS ÍONS EM [K].
+            ION TEMPERATURE [K].
         Tn : PANDA SERIES
-            TEMPERATURA DAS PARTÍCULAS NEUTRAS EM [K].
-
+            NEUTRALS TEMPERATURE [K].
+            
         Returns
         -------
         None.
@@ -77,32 +77,32 @@ class freqcol():
         
     def calc_freq(self,nN2, nO2, nO,Te,Tn,Ti):
         """
-        Cálculo das frequêncisa de colisão dos íon O+, ion 1 e elétrons com as partículas neutras.        
-        Equações retiradas do trabalho de Adachi et. al, 2017.
-    
+        CALCULATES THE COLLISION FREQUENCY OF O+, ION 1 AND ELECTRONS WITH NEUTRALS
+        EQUATIONS FROM  Adachi et. al, 2017
+        
         Parameters
         ---------
-        nN2 : TYPE
-            DESCRIPTION.
-        nO2 : TYPE
-            DESCRIPTION.
-        nO : TYPE
-            DESCRIPTION.
-        Te : TYPE
-            DESCRIPTION.
-        Tn : TYPE
-            DESCRIPTION.
-        Ti : TYPE
-            DESCRIPTION.
+        nN2 : PANDAS SERIES
+            N2 NUMBER DENSITY.
+        nO2 : PANDAS SERIES
+            O2 NUMBER DENSITY.
+        nO : PANDAS SERIES
+            O NUMBER DENSITY.
+        Te : PANDA SERIES 
+            Electron temperature [K].
+        Ti : PANDA SERIES
+            ION TEMPERATURE [K].
+        Tn : PANDA SERIES
+            NEUTRALS TEMPERATURE [K].
             
         Returns
         -------
             freqcol : DATAFRAME 
-                UM DATAFRAME CUJAS COLUNAS SÃO RESPECTIVAMENTE:
-                fen : frequência de colisão dos elétrons com as partículas neutras [Hz]
-                fin1 : frequência de colisão do íon 1 com as partículas neutras [Hz]
-                fin2 : frequência de colisão do íon 2 com as partículas neutras [Hz]
-                H(km) : ALTURA PARA QUAL A FREQUÊNCIA DE COLISÃO FOI CALCULADA [km]
+                A DATAFRAME WHOSE COLUMNS ARE:
+                fen : collision frequency between electrons and neutrals at given height[Hz]
+                fin1 : collision frequency between ion 1 and neutrals at given height[Hz]
+                fin2 : collision frequency between ion O+ and neutrals at given height [Hz]
+                H(km) : Height at which the collision frequencies will be calculated[km]
         """
         print('\nCalculating Collision Frequency...')
         Tr = self.calc_Tr(Ti,Tn)
@@ -127,7 +127,6 @@ class freqcol():
         
         print("Done")
         
-        #return freqcol
         
     def calc_fen(self,nN2, nO2, nO,Te):
         fen = 2.33e-17 * nN2 * (1 - 1.21e-4*Te) * Te 
@@ -153,7 +152,7 @@ class freqcol():
     
     def plot_freq_h(self):
         """
-        CRIA PERFIL DE ALTURA DAS FREQUÊNCIAS DE COLISÕES.
+        CREATES A HEIGHT PROFILE OF THE COLLISION FREQUENCIES.
 
         Returns
         -------
@@ -174,7 +173,7 @@ class freqcol():
         ax.grid(True)
     
     
-#======= TESTE ==========================
+#======= TEST ==========================
 # filenameiri = "IRI.3D.2008001.nc"
 # filenamemsise = "NRLMSIS2.0.3D.2008001.nc"
 

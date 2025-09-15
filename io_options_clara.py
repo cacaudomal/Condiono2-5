@@ -79,7 +79,7 @@ def write1(name, date, alt, lat, colat, lon, X, Y, Z, dX, dY, dZ, \
          alt, lat = iut.geo_to_gg(alt, colat)
          lat = 90-lat
          
-    print("entrou",name)
+    #print("entrou",name)
     
     if not name: # Print to screen
         print('\nGeomagnetic field values at: ', str(np.round(lat, decimals=4)) 

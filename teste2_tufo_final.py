@@ -17,7 +17,7 @@ import msise2Netcdf as msise
 
 import time
 #====  Reading data ====
-inicio = time.time() #função para ver o tempo inicial do programa
+inicio = time.time() #Function for getting the starting time of the program
 
 # IRI
 namefileiri = "IRI.3D.2008001.nc"
@@ -29,7 +29,7 @@ msisetest = msise.nrlmsisenetcdf(filenamemsise2)
 
 # IGRF
 resIGRF = "teste2024"
-dado = igrf.IGRF(-80,-180,100,2008,resIGRF + '_2') #preciso garantir que estão nas mesmas coordenadas
+dado = igrf.IGRF(-80,-180,100,2008,resIGRF + '_2') #its necessary to assure they are in the same coordinates.
 
 #calcigrf = dado.calc_grid(intervalo_h = 20, lim_h = 500, intervalo_lat=10, lim_lat=90, intervalo_lon=20, lim_lon=180)
 calcigrf = dado.get_grid(resIGRF + '_2' + "_grid.csv")
@@ -97,10 +97,10 @@ conductivity.calc_Pedersen(conductivity.calcvaluesdf["fen"],
 
 
 # #=== saving calculated data 
-conductivity.save_to_csv(conductivity.CondH.dropna(), "Condutividade_de_Hall")
+conductivity.save_to_csv(conductivity.CondH.dropna(), "Hall_Conductivity")
 print("d1")
 
-conductivity.save_to_csv(conductivity.CondP.dropna(), "Condutividade_de_Pedersen")
+conductivity.save_to_csv(conductivity.CondP.dropna(), "Pedersen_Conductivity")
 print("d2")
 
 #calculating height integrated data for a given day
@@ -117,8 +117,7 @@ gyrofreq.plot_gyrmap(gyrofreq.result,h=h,time="2008", localscope=True, savemap =
 conductivity.plot_2dgrid(conductivity.CondH.loc[:,:,:,'0 days 00:00:00'].dropna(),h,'Hall Conductivity at ' + str(h) + " km altitude" )
 conductivity.plot_2dgrid(conductivity.CondP.loc[:,:,:,'0 days 00:00:00'].dropna(),h,'Pedersen Conductivity at ' + str(h) + " km altitude" )
 
-#conductivity.plot_2dgrid_hintegrated2(hintegratedHall,title = ' Height integratred Halls conductivity at ' + str(h) + " km altitude")
-#(, h,'Height integratred conductivity at ' + str(h) + " km altitude")
+conductivity.plot_2dgrid_hintegrated2(hintegratedHall,title = ' Height integratred Halls conductivity at ' + str(h) + " km altitude")
 
 fim = time.time()
-print("tempo de execução do programa:",fim-inicio,"segundos")
+print("Program exectuion time: ",fim-inicio,"seconds")

@@ -7,13 +7,13 @@ Created on Thu Aug 10 11:42:46 2023
 
  Dependencies: 
  -------------
-     : numpy, scipy, matplotlib, pandas, pathlib, nrlmsise2, iri2, freqcol
+     : numpy, scipy, matplotlib, pandas, pathlib, geopandas <= 12.2, nrlmsise2, iri2, freqcol
 """
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from pathlib import Path
+#from pathlib import Path
 
 import freqcol_0_6 as fc
 import geopandas as gpd
@@ -21,32 +21,32 @@ import geopandas as gpd
 
 class gyrofrequency():
     def __init__(self,B):
-        self.me = 9.109389e-31 #Massa do elétron em repouso [kg]
-        self.mi1 = 5.065e-26 #Massa do íon 1 uma mistura de NO+ (75%) e O2+ (25%) (30.5 u.m.a.) [kg]
-        self.mi2 = 2.657e-26 #Massa do íon 2 (O+) [kg] (16 a.m.u)
-        self.e = -1.602177e-19 #Carga do elétron [C]
+        self.me = 9.109389e-31 #Mass of electron standing still [kg]
+        self.mi1 = 5.065e-26 #mass of ion 1 a mixture of NO+ (75%) and O2+ (25%) (30.5 u.m.a.) [kg]
+        self.mi2 = 2.657e-26 #Mass of ion 2 (O+) [kg] (16 a.m.u)
+        self.e = -1.602177e-19 #Electron charge [C]
 
         self.result = self.calc_all_girofreq(B)
         
         
     def calc_girofreq(self,mi,B):
         """
-        Funcao para cálculo da girofrequência ou frequência de ciclotron da
-        partícula num ponto.
+        FUNCTION FOR CALCULATING THE GYROFREQUENCY OR CYCLOTRON FREQUENCY OF A PARTICLE AT A POINT. 
+        
         
         Parameters
         ----------
         B : FLOAT
-            campo magnético em [T]
+            MAGNETIC FIELD[T]
         mi : FLOAT
-            massa do íon ou do elétron [kg]    
+           ION OR ELECTRON MASS [kg]    
         q : FLOAT
-            carga do íon/elétron [C]
+            Charge of ion/electron [C]
         
         Returns:
         ----------
         wi : FLOAT
-            girofrequencia [Hz]
+            GYROFREQUENCY [Hz]
             
         """
         wi = np.sqrt(self.e**2) * np.sqrt(B**2)/mi
@@ -63,7 +63,7 @@ class gyrofrequency():
         values : DATA FRAME
             DESCRIPTION.
         h : FLOAT
-            DESCRIPTION.
+            HEIGHT OF PLOT [km].
 
         Returns
         -------
@@ -177,19 +177,20 @@ class condiono_adachi():
     
     def _calc_pRelativa(self,rhoi,ne):
         """
-        Calcula a densidade numérica relativa da espécie ionica. Brekke (1993).
+        CALCULATES THE RELATIVE NUMBER DENSITY OF THE IONIC SPECIES. Brekke (1993)
+       
         
         Parameters
         ----------
         rhoi : PANDA SERIES FLOAT
-            densidade do íon [m^-3]     
+            ION DENSITY [m^-3]     
         ne : PANDA SERIES FLOAT
-            Densidade de elétrons [elétrons/m^3]
+            ELECTRONS DENSITY [elétrons/m^3]
         
         Returns:
         ----------
         pi : PANDA SERIES FLOAT
-            densidade numérica relativa (Brekke,1983)
+            RELATIVE NUMBER DENSITY (Brekke,1983)
             
         """    
         pi = rhoi/ne        
@@ -210,22 +211,22 @@ class condiono_adachi():
     
     def calc_rho_numion(self,rho_íonO,rho_íonNO,rho_íonO2,ne):
         """
-        Calcula a Densidade numérica dos íons O+ e fictício 1 (Brekke,1983).
-        Razão entre o número de íons e o volume.
+        CALCULATES NUMERIC DENSITY OF IONS O+ AND ION 1 (Brekke,1983). 
+        REASON BETWEEN THE NUMBER OF IONS AND THE VOLUME. 
         
         Parameters
         ----------
         rho_íonO : LIST FLOAT
-            concentração do íon O+ [%]
+            O+ concentration [%]
 
         rho_íonNO : LIST FLOAT
-            concentração do íon NO+ [%]
+            NO+ concentration[%]
 
         rho_íonO2 : LIST FLOAT
-            concentração do íon O2+ [%]
+            O2+ concentration [%]
 
         ne : LIST FLOAT
-            Densidade de elétrons [elétrons/m^3]
+            density of electrons [electrons/m^3]
         
         Returns:
         ----------
@@ -247,7 +248,7 @@ class condiono_adachi():
     
     def calc_freqcol(self,rhoN2,rhoO2,rhoO,Te,Tn,Ti,h):
         '''     
-        CALCULA AS FREQUÊNCIAS DE COLISÃO.
+        CALCULATES BOTH COLLISION FREQUENCY
 
         Parameters
         ----------
@@ -257,13 +258,12 @@ class condiono_adachi():
             DENSITY OF O2 AT A GIVEN HEIGHT [m^3] 
         rhoO : PANDA SERIES - FLOAT
             DENSITY OF O AT A GIVEN HEIGHT [m^3] 
-            
         Te : PANDA SERIES - FLOAT
-            TEMPERATURA DOS ELÉTRONS [K].
+            Electron temperature [K].
         Ti : PANDA SERIES - FLOAT
-            TEMPERATURA DOS ÍONS [K].
+            Ion temperature [K].
         Tn : PANDA SERIES - FLOAT
-            TEMPERATURA DAS PARTÍCULAS NEUTRAS [K].
+            Temperature of Neutral Particles [K].
 
         Returns
         -------
@@ -278,31 +278,30 @@ class condiono_adachi():
     
     def calc_Hall(self,fen,fin1,fin2,wi1,wi2,we,p1,p2,ne,B):
         """
-        CALCULA A CONDUTIVIDADE DE HALL APARTIR DAS EQUAÇÕES DE Adachi et al.
-        Earth, Planets and Space (2017).
-
+        CALCULATES THE HALL CONDUCTIVITY FROM THE  Adachi et al. Earth, Planets and Space (2017) equations.
+        
         Parameters
         ----------
-        fen : PANDA SERIES
-            frequência de colisão dos elétrons com as partículas neutras [Hz].
-        fin1 : PANDA SERIES
-            frequência de colisão do íon 1 com as partículas neutras [Hz].
-        fin2 : PANDA SERIES
-            frequência de colisão do íon 2 com as partículas neutras [Hz].
+        fen : PANDAS SERIES
+            Collision frequency of electron and neutrals [Hz].
+        fin1 : PANDAS SERIES
+            Collision frequency of ion 1 and neutrals [Hz].
+        fin2 : PANDAS SERIES
+            Collision frequency of ion O+ and neutrals [Hz].
         wi1 : PANDA SERIES
-            girofrequência do íon 1 [Hz].
+            girofrequency of ion 1 [Hz].
         wi2 : PANDA SERIES
-            girofrequência do íon 2 [Hz].
+            girofrequency of ion O+ [Hz].
         we : PANDA SERIES
-            girofrequência do elétron [Hz].
-        p1 : TYPE
+            girofrequency of electron [Hz].
+        p1 : PANDA SERIES
             DESCRIPTION.
-        p2 : TYPE
+        p2 : PANDA SERIES
             DESCRIPTION.
-        ne : TYPE
-            densidade de elétrons em [m^-3].
-        B : TYPE
-            intensidade do campo magnético da Terra [T].
+        ne : PANDA SERIES
+            density of electrons [m^-3].
+        B : PANDAS SERIES
+           Intensity of Earths magnetic field [T].
 
         Returns
         -------
@@ -310,7 +309,7 @@ class condiono_adachi():
             DESCRIPTION.
 
         """         
-        print("\n== Calculando a Condutividade de Hall")
+        print("\n== Calculating Hall conductivity")
             
         a1 = (wi2**2)/(wi2**2 + fin2**2)
         b1 = (wi1**2)/(wi1**2 + fin1**2)
@@ -326,31 +325,31 @@ class condiono_adachi():
     
     def calc_Pedersen(self,fen,fin1,fin2,wi1,wi2,we,p1,p2,ne,B):
         """
-        CALCULA A CONDUTIVIDADE DE PEDERSEN APARTIR DAS EQUAÇÕES DE Adachi et al.
-        Earth, Planets and Space (2017).
+        CALCULATES THE PEDERSEN CONDUCTIVITY FROM THE Adachi et al.
+        Earth, Planets and Space (2017) equations.
 
         Parameters
         ----------
         fen : PANDAS SERIES
-            frequência de colisão dos elétrons com as partículas neutras [Hz].
+            Colision frequency of electron and neutrals [Hz].
         fin1 : PANDAS SERIES
-            frequência de colisão do íon 1 com as partículas neutras [Hz].
+            Colision frequency of ion 1 and neutrals [Hz].
         fin2 : PANDAS SERIES
-            frequência de colisão do íon O+ com as partículas neutras [Hz].
+            Colision frequency of ion O+ and neutrals [Hz].
         wi1 : PANDAS SERIES
-            girofrequencia do íon 1 [Hz].
+            girofrequency of ion 1 [Hz].
         wi2 : PANDAS SERIES
-            girofrequência do íon O+ [Hz].
+            girofrequency of O+ ion [Hz].
         we : PANDAS SERIES
-            DESCRIPTION.
+           girofrequency of electron [Hz]
         p1 : PANDAS SERIES
             DESCRIPTION.
         p2 : PANDAS SERIES
             DESCRIPTION.
         ne : PANDAS SERIES
-            DESCRIPTION.
+            density of electrons [m^-3].
         B : PANDAS SERIES
-            DESCRIPTION.
+            MAGNETIC FIELD [T].
 
         Returns
         -------
@@ -361,7 +360,7 @@ class condiono_adachi():
         d = 0
         soma = 0
         
-        print("\n== Calculando a condutividade de Pedersen")
+        print("\n== Calculating Pedersen conductivity")
         
         a1 = (wi2 * fin2)/(wi2**2 + fin2**2)
         b1 = (wi1 * fin1)/(wi1**2 + fin1**2)
@@ -378,7 +377,7 @@ class condiono_adachi():
          
     def save_to_csv(self,data,filename):
         """
-        SALVA OS DADOS GUARDADOS NUM DATAFRAME NUM ARQUIVO.
+        SAVES THE DATA IN THE DATAFRAME IN A FILE
         
         parameters
         -------
@@ -386,11 +385,12 @@ class condiono_adachi():
             NAME, WITHOUT FILE TYPE, OF THE CREATED FILE.
             
         data : DATAFRAME
-            VALORES CALCULADOS QUE SERÃO SALVOS NO ARQUIVO. 
+            CALCULATED VALUES TO BE SAVED IN THE FILE.
+            . 
 
         """
         data.to_csv(filename + ".csv",sep=",",header=True)
-        print("condiono_0_9_5- _salva_dataframe : arquivo", filename," Salvo.\n")
+        print("condiono_0_9_5- _save_dataframe : file", filename," Saved.\n")
            
        
         
@@ -398,14 +398,14 @@ class condiono_adachi():
     
     def _prepplot_2dgrid(self,values,h):
         '''
-        PREPARES DATA FOR PLOTTING IN 2D SURFACE.
+        PREPARES DATA FOR PLOTTING IN 2D SURFACE AT GIVEN HEIGHT.
 
         Parameters
         ----------
         values : DATA FRAME
             DESCRIPTION.
         h : FLOAT
-            DESCRIPTION.
+            HEIGHT [km].
 
         Returns
         -------
@@ -429,6 +429,24 @@ class condiono_adachi():
         return X,Y,value2dformat
     
     def plot_2dgrid(self,values,h,title=" ") -> None:
+        """
+        PLOTTING 2D DATA IN GRID.
+
+        Parameters
+        ----------
+        values : TYPE
+            DESCRIPTION.
+        h : FLOAT
+            HEIGHT OF PLOT.
+        title : TYPE, optional
+            DESCRIPTION. The default is " ".
+
+        Returns
+        -------
+        None
+            DESCRIPTION.
+
+        """
         sizefig = (10,15)
         #values_plot = values.loc[h].reset_index() #leaving the multindex to use normal indexing
         countries = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
@@ -481,7 +499,7 @@ class condiono_adachi():
               
     def plot_2dgrid_hintegrated2(self,value2dformat,title=" ", sizefig=(10,15),savemap=True):
           '''
-          PLOT HEIGHT INTEGRATED CONDUCTIVITY 
+          PLOT HEIGHT INTEGRATED CONDUCTIVITY. 
 
           Parameters
           ----------
@@ -525,6 +543,6 @@ class condiono_adachi():
           fig.colorbar(cntr, ax = ax, label = 'Conductivity [S]',location = 'bottom')
           
           if savemap == True: 
-              fig.savefig("plot_" + title +'.png', dpi = 300, transparent=True)
+              fig.savefig("plot_" + title +'.pdf', dpi = 300, transparent=True)
           
           plt.show()

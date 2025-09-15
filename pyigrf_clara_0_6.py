@@ -97,17 +97,17 @@ igrf = iut.load_shcfile(IGRF_FILE, None)
 
 def string_para_float(dado):
     """
-    Método para separar um string contendo só números em uma lista de floats.
+    Method that separates a string containing only numbers in to a list of floats
     
     Parameters
     ----------
-    dado : VETOR DE STRING
-        DADOS A SEREM CONVERTIDOS.
+    dado : LIST OF STRINGS
+        DATA TO BE CONVERTED.
 
     Returns
     -------
-    dado : VETOR DE FLOAT
-        Dado convertido para float.  
+    dado : LIST OF FLOATS
+        DATA CONVERTED TO FLOAT.  
         
     """
     for x in range(len(dado)):
@@ -180,22 +180,22 @@ class IGRF():
         
     """
     
-    def __init__(self,lat,lon,h,ano,name_saida):
+    def __init__(self,lat,lon,h,ano,name_saida="igrf"):
         """
         Inicializa a classe IGRF.
         
         Parameters
         ----------
         lat : FLOAT
-            Latitude inicial em graus decimais.
+            INITIAL LATITUDE IN DECIMAL DEGREES.
         lon : FLOAT
-            LONGITUDE INICIAL EM GRAUS DECIMAIS.
+            INITIAL LONGITUDE IN DECIMAL DEGREES.
         h : FLOAT
-            ALTURA INICIAL [km].
+            INITIAL HEIGHT [km].
         ano : INT
-            ANO NO QUAL SERÁ CALCULADO OS VALORES DO CAMPO GEOMAGNÉTICO.
+            YEAR FOR WHICH THE DATA OF THE MAGNETIC FIELD WILL BE CALCULATED
         name_saida : STRING
-            NOME DO ARQUIVO DE SAÍDA SEM O FORMATO.
+            NAME OF THE OUTPUT FILE.
 
         Returns
         -------
@@ -212,7 +212,7 @@ class IGRF():
         Parameters
         ----------
         name_saida : STRING
-            NAME OF THE OUTPUT PILE TO BE USED.
+            NAME OF THE OUTPUT FILE TO BE USED.
 
         Returns
         -------
@@ -223,20 +223,19 @@ class IGRF():
     
     def _salva_dataframe(self,nomesaida,ResultStore):
         """
-        SALVA OS DADOS GUARDADOS NUM DATAFRAME NUM ARQUIVO.
-        
+        STORES THE DATA ON A DATAFRAME IN A FILE
         parameters
         -------
         nomesaida : STRING
-            NOME DO ARQUIVO NO QUAL SERÃO SALVOS OS DADOS SEM O FORMATO.
+            NAME WITHOUT FILE TYPE OF THE FILE IN WHICH THE DATA WILL BE STORED
             
         ResultStore : DATAFRAME
-            VALORES CALCULADOS QUE SERÃO SALVOS NO ARQUIVO. 
+            CALCULATED VALUES THAT WILL BE STORED IN THE FILE
 
         """
         
         ResultStore.to_csv(nomesaida+".csv",sep=",",header=True)
-        print("pyigrf_clara_0_6 - _salva_dataframe : arquivo", nomesaida," aberto.\n")
+        print("pyigrf_clara_0_6 - _salva_dataframe : file", nomesaida," open.\n")
     
     def get_grid(self,nomearq):
         """
@@ -279,8 +278,10 @@ class IGRF():
         Parameters
         ----------
         name : STRING
-            nome do arquivo de entrada
+            name of the entry file
         dado : LIST
+            List with the configurations you wantfor the program
+            [option,lat,long,height,year]
             Lista com os parametros para configurar os dados que vc quer do programa
             [opção, lat, long, altura, ano]
         parLat : 
@@ -398,27 +399,28 @@ class IGRF():
                      
     def calc_grid(self,intervalo_h = 10,lim_h = 500,intervalo_lat=-5,lim_lat=-60,intervalo_lon=-5,lim_lon=-110):
         """
-        CRIA O GRID PARA OS INTERVALOS DE ALTURA, LATITUDE E LONGITUDE ESPECIFICADOS E SALVA OS DADOS NUM ARQUIVO. 
+        CREATES THE GRID WITH THE GIVEN HEIGHT, LATITUDE AND LONGITUDE INTERVALS AND SAVES THE DATA IN A FILE
+        
         
         Parameters
         ----------
         intervalo_h : FLOAT, optional
-            espaçamento da altura entre os pontos calculado [km]. The default is 5.
+            HEIGHT INTERVAL BETWEEN CALCULATED POINTS [km]. The default is 5.
         lim_h : FLOAT, optional
-            ALTURA MÁXIMA [km]. The default is 300.
+            MAX HEIGHT [km]. The default is 300.
         intervalo_lat : FLOAT, optional
-            INTERVALO ENTRE OS PONTOS DE LATITUDE A SEREM CALCULADOS [decimal degree]. The default is -1.
+            LATITUDE INTERVAL BETWEEN CALCULATED POINTS [decimal degree]. The default is -1.
         lim_lat : FLOAT, optional
-            LATITUDE FINAL [decimal degree]. The default is -35.
+            FINAL LATITUDE  [decimal degree]. The default is -35.
         intervalo_lon : FLOAT, optional
-            INTERVALO ENTRE OS PONTOS DE LONGITUDE A SEREM CALCULADOS [decimal degree]. The default is -1.
+            LO9NGITUDE INTERVAL BETWEEN CALCULATED POINTS  [decimal degree]. The default is -1.
         lim_lon : FLOAT, optional
-            LONGITUDE MÁXIMA [decimal degree]. The default is -35.
+            FINAL LONGITUDE [decimal degree]. The default is -35.
 
         Returns
         -------
         lgrid : DATAFRAME
-            DATAFRAME COM OS VALORES CALCULADOS NAS ALTURAS E COORDENADAS DADAS.
+            DATAFRAME WITH CALCULATED VALUES.
 
         """
         lgrid = []
@@ -439,7 +441,8 @@ class IGRF():
                    # print("calc_grid",lat,lon,h,lgrid)
                     
         #print("\n\ncalc_grid - grid :",len(grid))
-        print("lgrid",lgrid)
+        print("\n\nlgrid",lgrid)
+        
         self.Dfgrid = pd.DataFrame(lgrid,columns = ['Altitude','Latitude','Longitude','Year','Declination' , 'Inclination' , 'Horizontal_intensity' , 'Total_intensity','North_component','East_component','Vertical_component' , 'DeclinationSV' , 'InclinationSV' , 'HorizontalSV' , 'TotalSV' , 'NorthSV' , 'EastSV' , 'VerticalSV'] )
         self._nT_to_T_grid()
         
@@ -449,7 +452,7 @@ class IGRF():
         nomearq = self.name_saida + "_grid" 
         self._salva_dataframe(nomearq,self.Dfgrid)
         
-        print("\npyigrf_clara - calc_grid : grid saved")
+        print("\npyigrf_clara - calc_grid : grid " + nomearq + " saved.\n")
         
         return lgrid
     
@@ -465,23 +468,25 @@ class IGRF():
                                 
     def calc_perfilh(self,lat,lon,lim_h = 750,intervalo_h = 5):
         """
+        FUNCTION FOR CALCULATING THE VALUES OF THE MAGNETIC FIELD BY HEIGHT
         Função que calcula os valores do campo magnético em um perfil de altitude.
 
         Parameters
         ----------
         lim_h : INT, optional
-            LIMITE SUPERIOR PARA O QUAL A ALTURA SERÁ CALCULADA. The default is 300.
+            HEIGHT SUPERIOR LIMIT. The default is 300.
         intervalo_h : INT, optional
-            INTERVALOS PARA O QUAL OS VALORES SERÃO CALCULADOS. The default is 5.
+            HEIGHT INTERVAL/HEIGHT DELTA. The default is 5.
 
         Returns
         -------
         self.DfPerfilh : DATAFRAME
-            PERFIL DE ALTURA PARA OS VALORES DO CAMPO MAGNÉTICO EM LATITUDE E LONGITUDE FIXA.
+            HEIGHT PROFILE FOR VALUES OF THE MAGNETIC FIELD FOR A GIVEN LATITUDE AND LONGITUDE.
+
         """
         nomesaida = self.name_saida + "_perfil"
         lperfil = []
-        print("pyigrf_clara - calc_perfilh: Calculando Perfil de Altura do Campo Magnético")
+        print("pyigrf_clara - calc_perfilh: Calculating the height profile of the magnetic field")
        
         for i in np.arange(self.entrada_usuario[2],lim_h,intervalo_h): 
             lperfil.append(self._calc_igrf(lat,lon,i,self.entrada_usuario[3])) #quando ele calcula ele já guarda no arquivo o valor daquele ponto
@@ -499,33 +504,32 @@ class IGRF():
     
     def coord_centro(self,dado,nomearq = "centro_coord"):
         """
-        Identifica onde está o centro da anomalia magnética do atlântico sul e em que altura. 
-        Considera o centro como o ponto de menor valor de intensidade do campo independentemente da altura.
-
+        IDENTIFIES WHERE IS THE CENTER OF THE SOUTH ATLANTIC MAGNETIC ANOMALY AT A GIVEN HEIGHT.
+        IT CONSIDERS THE CENTER OF THE ANOMALY THE POINT OF SMALLER VALUE OF FIELD INTENSITY.
         Parameters
         ----------
         dado : DATAFRAME
-            DADOS CALCULADOS PELA FUNÇÃO CALC_GRID.
+            DATA CALCULATED IN THE FUNCTION CALC_GRID.
 
         Returns
         -------
        linha_dataframe["Latitude"] : PANDA SERIES
-            DATA SERIES COM OS VALORES DE LATITUDE EM GRAUS DECIMAIS.
+            VALUES OF LATITUDE IN DECIMAL DECIMAL DEGREE
         
         linha_dataframe["Longitude"] : PANDA SERIES
-            DATA SERIES COM OS VALORES DE LONGITUDE EM GRAUS DECIMAIS.
+            VALUES OF LONGITUDE IN DECIMAL DECIMAL DEGREE.
         
         linha_dataframe["Total_intensity"] : PANDA SERIES
-            DATA SERIES COM VALOR DA INTENSIDADE DO CAMPO MAGNÉTICO EM [nT]
+            INTENSITY OF MAGNETIFIELD [nT]
 
         """
         #valorB_centro = dado["Total_intensity"].min()
         #print("coord_centro Tipo dado:",type(dado))
         
-        posicao_linha_dataframe = dado["Total_intensity"].idxmin() # qual linha esta o menor valor? 
+        posicao_linha_dataframe = dado["Total_intensity"].idxmin() 
         print("coord_centro posicao linha dataframe : " ,posicao_linha_dataframe,"len dado",len(dado))
         
-        linha_dataframe = dado.iloc[posicao_linha_dataframe] #pega essa linha e salva no data frame
+        linha_dataframe = dado.iloc[posicao_linha_dataframe] #take the line and saves in the data frame
         self._salva_dataframe(self.name_saida + "_coord_centro", linha_dataframe)
         
         return linha_dataframe["Latitude"],linha_dataframe["Longitude"], linha_dataframe["Total_intensity"],linha_dataframe["Altitude"]
@@ -533,25 +537,23 @@ class IGRF():
     
     def coord_centro_all_heights(self,dado,nomearq = "centro_coord"):
         """
-        Identifica onde está o centro da anomalia magnética do atlântico sul. 
-        Considera o centro como o ponto de menor valor de intensidade do campo.
+        IDENTIFIES WHERE IS THE CENTER OF THE SOUTH ATLANTIC MAGNETIC ANOMALY FOR ALL HEIGHTS
 
         Parameters
         ----------
         dado : DATAFRAME
-            DADOS CALCULADOS PELA FUNÇÃO CALC_GRID.
+            DATA CALCULATED IN THE FUNCTION CALC_GRID.
 
         Returns
         -------
-       linha_dataframe["Latitude"] : DATA SERIES
-            DATA SERIES COM OS VALORES DE LATITUDE EM GRAUS DECIMAIS.
+       linha_dataframe["Latitude"] : PANDA SERIES
+            VALUES OF LATITUDE IN DECIMAL DECIMAL DEGREE
         
-        linha_dataframe["Longitude"] : DATA SERIES
-            DATA SERIES COM OS VALORES DE LONGITUDE EM GRAUS DECIMAIS.
+        linha_dataframe["Longitude"] : PANDA SERIES
+            VALUES OF LONGITUDE IN DECIMAL DECIMAL DEGREE.
         
-        linha_dataframe["Total_intensity"] : DATA SERIES
-            DATA SERIES COM VALOR DA INTENSIDADE DO CAMPO MAGNÉTICO EM [nT]
-
+        linha_dataframe["Total_intensity"] : PANDA SERIES
+            INTENSITY OF MAGNETIFIELD [nT]
         """
         #valorB_centro = dado["Total_intensity"].min()
         #print("coord_centro Tipo dado:",type(dado))
@@ -569,15 +571,15 @@ class IGRF():
 
     def plot_grid(self,Dfgrid,h = 400):
         """
-        PLOTA A INTENSIDADE DO CAMPO MAGNÉTICO NUMA DADA ALTURA SOBRE O MAPA DA TERRA.
+        PLOTS THE INTENSITY OF THE MAGNETIC FIELD AT A GIVEN HEIGHT ON EARTHS MAP.
 
         Parameters
         ----------
         Dfgrid : DATAFRAME
-            DATAFRAME COM O GRID DOS VALORES CALCULADOS NA FUNÇÃO calc_grid, TEM QUE TER UMA COLUNA "Total_intensity".
-            TEM QUE SER UM GRID QUADRADO NA LAT E LONG. 
+            GRID OF THE VALUES CALCULATED IN THE FUNCTION calc_grid, HAS TO HAVE A 'Total_intensity' COLUMN
+            HAS TO BE SQUARED IN LATITUDE AND LONGITUDE
         h : INTEGER, optional
-            ALTURA PARA A QUAL O CAMPO MAGNÉTICO SERÁ PLOTADO [km]. The default is 400.
+            HEIGHT TO WHICH THE MAGNETIC FIELD WILL BE PLOTED [km] The default is 400.
 
         Returns
         -------
@@ -614,7 +616,7 @@ class IGRF():
         ax.set_xlim((a['Longitude'].min(),a['Longitude'].max()))
         ax.set_ylim((a["Latitude"].min(),a["Latitude"].max()))
         
-        fig.savefig("plot_" + str(self.entrada_usuario[3]) + self.name_saida+'.png', dpi = 300, transparent=True)
+        fig.savefig("plot_" + str(self.entrada_usuario[3]) + self.name_saida+'.jpg', dpi = 300, transparent=True)
         plt.show()
         
     

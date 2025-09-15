@@ -19,14 +19,14 @@ import read_netcdf_01 as rn
 
 class iri():
     """
-    Classe para ler e armazenar os dados do modelo IRI.
+    CLASS FOR READING AND STORING DATA FROM THE IRI MODEL.
     
     ...
             
     Attributes
     ----------
     nome_arq : STRING
-        NOME DO ARQUIVO IRI ONDE ESTÃO GUARDADOS OS DADOS A SEREM LIDOS
+        NAME OF THE IRI FILE WHERE THE DATA IS STORED    
     
     Methods
     ----------
@@ -48,19 +48,19 @@ class iri():
     
     def _ler_arq(self,nomearq):
         """
-        FUNÇÃO QUE LÊ O ARQUIVO DO IRI 2020, SALVA CADA LINHA NUMA LISTA, RETORNA 
-        OS VALORES A PARTIR DA LINHA 32 E DESCARTA O RESTO.
+        FUNCTION THAT READS FILES FROM IRI 2020, SAVE EACH LINE TO A LIST, RETURNS
+        THE VALUES STARTING AT LINE 32 AND DISCARDS THE REST. 
 
         Parameters
         ----------
         nomearq : STRING
-            NOME DO ARQUIVO ONDE ESTÃO OS DADOS. IRI2020
+            NAME OF THE FILE WHERE THE DATA IS STORED. IRI2020
 
         Returns
         -------
         guardadado : LIST
-            LISTA DE STRINGS CONTENDO OS DADOS EM CADA LINHA. \
-                PULAMOS PARA A LINHA 32 PQ É ONDE ESTÁ O NOME DAS COLUNAS. NA LINHA 33 OS DADOS COMEÇAM DE FATO.
+            LIST OF STRINGS CONTAINING EACH LINE DATA.
+                WE SKIP TO LINE 32 BECAUSE ITS WHERE THE NAME OF THE COLUMNS IS AT. tHE DATA STAR AT LINE 33
 
         """
         with open(nomearq,"r") as arq: 
@@ -69,25 +69,25 @@ class iri():
         
         guardadado = []
         for i in range(len(dado)):
-            guardadado.append(dado[i].split())#separa os valores no string da linha pro seus próprios espaços
+            guardadado.append(dado[i].split())
         #print("\nle iri : ",guardadado[32])
         
-        return guardadado[31:] # 32 para IRI2020 e 31 para IRI2016
-                               #33 é a ultima linha do cabeçalho a linha 32 tem o header do dataframe 
+        return guardadado[31:] # 32 for IRI2020 and 31 for IRI2016
+                                # 33 is the las line of the header and line 32 has the header of the dataframe
     
     def _string_para_float(self,dado):
         """
-        Método para separar uma lista de strings contendo só números em uma lista de listas de floats.
+        Method that separates a list of strings containing only numbers in a list of float lists 
         
         Parameters
         ----------
-        dado : VETOR DE STRINGS
-            DADOS A SEREM CONVERTIDOS.
+        dado : LIST OF STRING 
+            DATA TO BE CONVERTED
 
         Returns
         -------
-        result : VETOR DE FLOAT
-            Dado convertido para float.  
+        result : LIST OF FLOATS
+            DATA CONVERTED TO FLOAT
             
         """
         result = [list(map(float,i)) for i in dado] #faz o typecast de todos os valores de cada linha da lista de listas de str para float
@@ -104,19 +104,19 @@ class iri():
     
     def calc_rho_numion(self, ne, rho_ion):
        """
-       Calcula a Densidade numérica do ion a partir da densidade de elétrons e da concentração do íon na atmosfera.
-    
+       CALCULATES THE NUMBER DENSITY OF IONS  FROM THE ELECTRON DENSITY AND ATMOSPHERIC IONS CONCENTRATION
+      
        Parameters
        ----------
        rho_ion : PANDA SERIES - FLOAT
-           concentração do íon [%]
+           IONIC CONCENTRATION [%]
        ne : PANDA SERIES - FLOAT
-           Densidade de elétrons [elétrons/m^3]
+           ELECTRON DENSITY [electrons/m^3]
     
        Returns:
        ----------
        rhoion : PANDA SERIES - FLOAT
-           densidade numérica do íon [m^-3]
+           ion number density [m^-3]
        
        """
        rhoion =  ne * rho_ion/100 #densidade do íon em [m^-3]
@@ -126,7 +126,8 @@ class iri():
     
     def eletron_cm3to_m3(self):
         """
-        CRIA COLUNA COM OS VALORES DA DENSIDADE DE ELÉTRONS em M-³ NO DATAFRAME DADO.
+        CREATES COLUMNS WITH THE ELECTRION DENSITY VALUES IN m-³ IN THE GIVEN DATAFRAME
+
 
         Returns
         -------
@@ -138,8 +139,7 @@ class iri():
         
     def to_percentage(self):
         '''
-        CONVERTE A CONCENTRAÇÃO DO ION DE PERCENTAGEM * 10 PARA PORCENTAGEM E COLOCA NUM DATAFRAME
-        E SALVA NUM DATAFRAME SEPARADO.
+        CONVERTS IONIC CONCENTRATION*10 TO IONIC CONCENTRATION AND SAVES IN A DATAFRAME.
         Returns
         -------
         None.
@@ -166,16 +166,16 @@ class iri():
     
     def plot_densidade_e(self, ne, h, data=""):
         """
-        FUNÇÃO PARA PLOTAR A DENSIDADE DE ELÉTRONS COM A ALTURA.
+        FUNTION FOR PLOTTING A ELECTRON DENSITY HEIGHT PROFILE.
 
         Parameters
         ----------
-        ne : PANDA SERIES - FLOATS
-            DESCRIPTION.
+        ne : PANDA SERIES 
+            ELECTRON DENSITY [m^-3]
         h : PANDA SERIES
-            DESCRIPTION.
+            LIST OF HEIGHTS [km].
         data : STRING, optional
-            DATA PARA O QUAL O DADO FOI ADQUIRIDO. The default is "".
+            DATE AT WHICH THE DATA WAS AQUIRED. The default is "".
 
         Returns
         -------
@@ -184,10 +184,10 @@ class iri():
         """
         plt.figure(figsize=(5,5))
         plt.semilogx(ne,h,label = "$N_e$ "+data)
-        plt.xlabel("Densidade de elétrons ($m^{-3}$)")
-        plt.ylabel("Altura (km)")
+        plt.xlabel("Electron Density ($m^{-3}$)")
+        plt.ylabel("Height (km)")
        
-        plt.title("Densidade de elétrons \n " + data)
+        plt.title("Electron Density \n " + data)
         
         plt.legend()
         plt.grid()
@@ -200,9 +200,9 @@ class iri():
 
         plt.plot(self.rhodado,self.data["H(km)"])
         
-        plt.ylabel("Altura (km)")
-        plt.xlabel("Densidade de íons ($m^{-3}$)")
-        plt.title("Densidade de ions \n ")
+        plt.ylabel("Height (km)")
+        plt.xlabel("Ion density ($m^{-3}$)")
+        plt.title("Ion density \n ")
         
         plt.legend()
         plt.grid()

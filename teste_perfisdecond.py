@@ -14,7 +14,7 @@ import irinetcdf_02 as iri
 
 #====== IGRF
 resIGRF = "teste2024"
-dado = igrf.IGRF(-80,-180,100,2008,resIGRF + '_2') #preciso garantir que estão nas mesmas coordenadas
+dado = igrf.IGRF(-80,-180,100,2008,resIGRF + '_2') #need to garantee they are in the same coordinates.
 
 #calcigrf = dado.calc_grid(intervalo_h = 20, lim_h = 500, intervalo_lat=10, lim_lat=90, intervalo_lon=20, lim_lon=180)
 calcigrf = dado.get_grid(resIGRF + '_2' + "_grid.csv")
@@ -36,12 +36,12 @@ condP.sort_values(['time','ht','lat','lon'],inplace=True)
 condP = condP.set_index(['time','ht','lat','lon'])
 
 #plotting conductivity profiles
-plt.plot(condH.loc["0 days 03:15:00",:,-50,60],condH.index.get_level_values('ht').unique(),label="-50 lat 60 lon 03:15:00 Hall")
-plt.plot(condH.loc["0 days 03:15:00",:,-50,240],condH.index.get_level_values('ht').unique(),label="-50 lat 240 lon 03:15:00 Hall")
+#plt.semilogx(condH.loc["0 days 03:15:00",:,-50,60],condH.index.get_level_values('ht').unique(),label="-50 lat 60 lon 03:15:00 Hall")
+#plt.plot(condH.loc["0 days 03:15:00",:,-50,240],condH.index.get_level_values('ht').unique(),label="-50 lat 240 lon 03:15:00 Hall")
 # plt.plot(condP.loc["0 days 03:15:00",:,-50,60],condP.index.get_level_values('ht').unique(),label="-50 lat 60 lon 03:15:00 Pedersen")
 
-# plt.plot(condH.loc["0 days 18:45:00",:,-50,240],condH.index.get_level_values('ht').unique(),label="-50 lat 240 lon 18:45:00 Hall")
-# plt.plot(condP.loc["0 days 18:45:00",:,-50,240],condP.index.get_level_values('ht').unique(),label="-50 lat 240 lon 18:45:00 Pedersen")
+plt.semilogx(condH.loc["0 days 00:00:00",:300,-50,240],condH.loc[:,:300,:,:].index.get_level_values('ht').unique(),label="-50 lat 240 lon 18:45:00 Hall")
+plt.plot(condP.loc["0 days 00:00:00",:300,-50,240],condP.loc[:,:300,:,:].index.get_level_values('ht').unique(),label="-50 lat 240 lon 18:45:00 Pedersen")
 
 plt.grid()
 plt.legend()
