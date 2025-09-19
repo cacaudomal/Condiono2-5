@@ -3,5 +3,5 @@ Python library for calculating Pedersen and Hall electric conductivity in the io
 
 The pyigrf_clara.py is based on a library made by Ciaran Beggan called pyIGRF and uses its equations for calculationg the values of the IGRF model.
 
-## Requirements **
-libraries:** pandas, matplotlib, scipy, numpy, geopandas ≤ 12.2, xarray, time
+## Requirements 
+**libraries:** pandas, matplotlib, scipy, numpy, geopandas ≤ 12.2, xarray, time
