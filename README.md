@@ -8,4 +8,5 @@ The pyigrf_clara.py is based on a library made by Ciaran Beggan called pyIGRF an
 
 ## Jupyter Notebook
 **plot_kyoto** : Plots data from the kyoto model and compares it to condiono modelPlots data from the kyoto model
+
 **plotirienrlmsisedata** : Reads and Plots IRI and NRLMSISE data.
