@@ -4,9 +4,12 @@ Python library for calculating Pedersen and Hall electric conductivity in the io
 The pyigrf_clara.py is based on a library made by Ciaran Beggan called pyIGRF and uses its equations for calculationg the values of the IGRF model.
 
 ## Requirements 
-**libraries:** pandas, matplotlib, scipy, numpy, geopandas ≤ 12.2, xarray, time
+**libraries:** pandas, matplotlib, scipy, numpy, geopandas ≤ 0.12.2, xarray, time
 
 ## Jupyter Notebook
+
 **plot_kyoto** : Plots data from the kyoto model and compares it to condiono modelPlots data from the kyoto model
 
 **plotirienrlmsisedata** : Reads and Plots IRI and NRLMSISE data.
+
+**testeCalcPlot_HallPedersen** : Calculates and plots Hall and Pedersen conductivities. It does so from both the library of condiono and locally defined functions
