@@ -12,4 +12,8 @@ The pyigrf_clara.py is based on a library made by Ciaran Beggan called pyIGRF an
 
 **plotirienrlmsisedata** : Reads and Plots IRI and NRLMSISE data.
 
-**testeCalcPlot_HallPedersen** : Calculates and plots Hall and Pedersen conductivities. It does so from both the library of condiono and locally defined functions
+**testeCalcPlot_HallPedersen_0_8** : Calculates and plots Hall and Pedersen conductivities. It does so from both the library of condiono and locally defined functions
+
+**read_conductivity_data** :
+
+**Validacao** :
