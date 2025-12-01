@@ -31,14 +31,6 @@ def get_data(filename):
     with xr.open_dataset(filename) as f:
         #print("variables",f.variables) #getting info about variables measuring units
         data = f.to_dataframe() #getting all variables
-        # sst variable
-        
-        #print("attr",f.attrs)
-        #print(f.data_vars)
-        #print(f.variables.keys()) # get all variable names
-        #attrs = f.variables
-    #convert from netcdf to dataframe
-    #data = data.to_dataframe()
     
     return data#,attrs
 
@@ -77,7 +69,6 @@ def pltcontour_data(data,variable,time,heigth):
     ax.grid(visible = True, alpha = 0.5)
      
     #  #plota o mapa de contornos
-    #  #mudar cor das linhas
     a = ax.tricontourf(varplot["lon"],varplot["lat"],varplot[variable],15) 
     
     fig.colorbar(a,ax=ax,label="density of " + variable)

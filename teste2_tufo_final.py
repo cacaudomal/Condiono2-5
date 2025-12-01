@@ -16,6 +16,7 @@ import irinetcdf_02 as iri
 import msise2Netcdf as msise
 
 import time
+
 #====  Reading data ====
 inicio = time.time() #Function for getting the starting time of the program
 
@@ -32,7 +33,7 @@ resIGRF = "teste2024"
 dado = igrf.IGRF(-80,-180,100,2008,resIGRF + '_2') #its necessary to assure they are in the same coordinates.
 
 #calcigrf = dado.calc_grid(intervalo_h = 20, lim_h = 500, intervalo_lat=10, lim_lat=90, intervalo_lon=20, lim_lon=180)
-calcigrf = dado.get_grid(resIGRF + '_2' + "_grid.csv")
+dado.get_grid(resIGRF + '_2' + "_grid.csv")
 
 dado.Dfgrid['Longitude'] = 180 + dado.Dfgrid['Longitude'] #so it will be from 0 to 360 instead
 dado.Dfgrid = dado.going_to_multiindex(dado.Dfgrid)
@@ -40,13 +41,14 @@ dado.Dfgrid.index.names = ['ht','lat','lon'] #putting the same index names as th
 
 
 #==== Calculating Conductivities
+
 #= Calculating colision frequencies
 freqc = fc.freqcol(msisetest.msise.data["N2"],
             msisetest.msise.data["O2"],
             msisetest.msise.data["O"],
-            iriteste.iridata.data['Te'],
-            iriteste.iridata.data['Tn'],
-            iriteste.iridata.data['Ti'])
+            iriteste.iri.data['Te'],
+            iriteste.iri.data['Tn'],
+            iriteste.iri.data['Ti'])
 
 #= Calculating Angular Gyrofrequency
 gyrofreq = cond.gyrofrequency(dado.Dfgrid["B(T)"])
@@ -54,10 +56,10 @@ gyrofreq = cond.gyrofrequency(dado.Dfgrid["B(T)"])
 #= Calculating Relative Contruibution Parammeter
 conductivity = cond.condiono_adachi()
 
-conductivity.calc_prelativa_all(iriteste.iridata.data["O+"],
-                        iriteste.iridata.data["NO+"],
-                        iriteste.iridata.data["O2+"],
-                        iriteste.iridata.data["Ne"])
+conductivity.calc_prelativa_all(iriteste.iri.data["O+"],
+                        iriteste.iri.data["NO+"],
+                        iriteste.iri.data["O2+"],
+                        iriteste.iri.data["Ne"])
 
 # #Alining Data by putting everything in a same Data Frame
 conductivity.calcvaluesdf = gyrofreq.result.join(freqc.result.copy(),
@@ -77,7 +79,7 @@ conductivity.calc_Hall(conductivity.calcvaluesdf["fen"],
                         conductivity.calcvaluesdf['we'],
                         conductivity.p1,
                         conductivity.p2,
-                        iriteste.iridata.data['Ne'],
+                        iriteste.iri.data['Ne'],
                         dado.Dfgrid["B(T)"]).dropna()
 
 # #the igrf data keeps pulling the time index to the deeper level, gotta beware of 
@@ -92,7 +94,7 @@ conductivity.calc_Pedersen(conductivity.calcvaluesdf["fen"],
                         conductivity.calcvaluesdf['we'],
                         conductivity.p1,
                         conductivity.p2,
-                        iriteste.iridata.data['Ne'],
+                        iriteste.iri.data['Ne'],
                         dado.Dfgrid["B(T)"]).dropna()
 
 
@@ -113,11 +115,11 @@ hintegratedHall = conductivity.calc_height_integrated_conductivity(conductivity.
 # when = 0 
 
 gyrofreq.plot_gyrmap(gyrofreq.result,h=h,time="2008", localscope=True, savemap = True,filename="gyrofrequency_clara_teste")
-6
+
 conductivity.plot_2dgrid(conductivity.CondH.loc[:,:,:,'0 days 00:00:00'].dropna(),h,'Hall Conductivity at ' + str(h) + " km altitude" )
 conductivity.plot_2dgrid(conductivity.CondP.loc[:,:,:,'0 days 00:00:00'].dropna(),h,'Pedersen Conductivity at ' + str(h) + " km altitude" )
 
-conductivity.plot_2dgrid_hintegrated2(hintegratedHall,title = ' Height integratred Halls conductivity at ' + str(h) + " km altitude")
+#conductivity.plot_2dgrid_hintegrated2(hintegratedHall,title = ' Height integratred Halls conductivity at ' + str(h) + " km altitude")
 
 fim = time.time()
 print("Program exectuion time: ",fim-inicio,"seconds")

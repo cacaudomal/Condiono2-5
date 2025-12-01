@@ -24,31 +24,27 @@ import read_netcdf_01 as rn
         
 class irincdf():
     def __init__(self,filename):
-        self.iridata = self._read(filename) 
+        self.iri = self._read(filename) 
         pass
     def __str__(self):
         
         return "measuring units:\n"+str(list(self.d.munit.items()))
         
     def _read(self,filename):
-        #d = {}
-        #for i in ["O+","N+","H+","He+","O2+","NO+","Ne","Tn","Ti","Te"]:
-        self.d = rn.basencdf(filename)
-
-        return self.d
+        return rn.basencdf(filename)
     
     def plot_densidade_e(self, ne, h, data=""):
         """
-        FUNÇÃO PARA PLOTAR A DENSIDADE DE ELÉTRONS COM A ALTURA.
+        FUNCTION FOR PLOTTING THE ELECTRON DENSITY HEIGHT PROFILE. 
 
         Parameters
         ----------
         ne : PANDA SERIES - FLOATS
-            DESCRIPTION.
+            ELECTRON DENSITY[m^-3].
         h : PANDA SERIES
-            DESCRIPTION.
+            HEIGHT [km].
         data : STRING, optional
-            DATA PARA O QUAL O DADO FOI ADQUIRIDO. The default is "".
+            DATE IN WHICH THE DATA WAS AQUIRED. The default is "".
 
         Returns
         -------
@@ -58,10 +54,10 @@ class irincdf():
         fig = plt.figure(figsize=(5,5))
         
         plt.plot(ne,h,label = "$N_e$ "+data)
-        plt.xlabel("Densidade de elétrons ($m^{-3}$)")
-        plt.ylabel("Altura (km)")
+        plt.xlabel("Electron density ($m^{-3}$)")
+        plt.ylabel("Height (km)")
        
-        plt.title("Densidade de elétrons \n " + data)
+        plt.title("Electron density \n " + data)
         
         plt.legend()
         plt.grid()

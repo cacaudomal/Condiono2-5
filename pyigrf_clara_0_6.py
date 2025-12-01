@@ -280,7 +280,7 @@ class IGRF():
         name : STRING
             name of the entry file
         dado : LIST
-            List with the configurations you wantfor the program
+            List with the configurations you want for the program
             [option,lat,long,height,year]
             Lista com os parametros para configurar os dados que vc quer do programa
             [opção, lat, long, altura, ano]

@@ -50,6 +50,7 @@ class nrlmsise():
             
         self.data.columns = ["Year","Mon","Day","DOY","hour","H(km)","Lat","Lon","O (m-3)","N2 (m-3)","O2 (m-3)","air(gm/cm3)","Tn(K)","exoT(K)","He (m-3)","Ar (m-3)","H (m-3)","N (m-3)","F107", "F107a","apdaily","ap0-3","ap3-6","ap6-9","ap9-12","ap12-33","ap33-59"]
         
+        
     def plot_concentration(self,data):
         #plt.figure(figsize=(5,5))
         H = data["H(km)"]
@@ -82,26 +83,26 @@ class nrlmsise():
     
 #======================================================        
         
-class nrlmsisenetcdf():
-    def __init__(self,filename):
-        self.msise = self._read(filename) 
-        self._convert_cm3tom3()
+# class nrlmsisenetcdf():
+#     def __init__(self,filename):
+#         self.msise = self._read(filename) 
+#         self._convert_cm3tom3()
         
-    def _read(self,filename):
-        d = {}
-        for i in ["O","N2","O2","MASS","NT","ET","He","AR","AO","H","N"]:
-            d[i] = rn.basencdf(filename, i)
+#     def _read(self,filename):
+#         d = {}
+#         for i in ["O","N2","O2","MASS","NT","ET","He","AR","AO","H","N"]:
+#             d[i] = rn.basencdf(filename, i)
             
-        return d
+#         return d
     
-    def _convert_cm3tom3(self):
-        for i in ["O","N2","O2","MASS","NT","ET","He","AR","AO","H","N"]:
-            self.msise[i].data = self.msise[i].data*1e6
-            self.msise[i].munit['units'] = self.msise[i].munit['units']+" * 1e6"
+#     def _convert_cm3tom3(self):
+#         for i in ["O","N2","O2","MASS","NT","ET","He","AR","AO","H","N"]:
+#             self.msise[i].data = self.msise[i].data*1e6
+#             self.msise[i].munit['units'] = self.msise[i].munit['units']+" * 1e6"
             
 
-filename = "NRLMSIS2.0.3D.2008001.nc"    
-a = nrlmsisenetcdf(filename)  
+# filename = "NRLMSIS2.0.3D.2008001.nc"    
+# a = nrlmsisenetcdf(filename)  
   
 #nomearqMSISE = "NRLMSISE_lat69_lon19_z300_s5_data30MAR2012_h6UT.txt"
 #msise = nrlmsise(nomearqMSISE)
