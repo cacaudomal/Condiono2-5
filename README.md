@@ -2,8 +2,13 @@
 Python library for calculating Pedersen and Hall electric conductivity in the ionospheres. It uses Adachi et. al. (2017) equations for it's calculations and data from IRI2016, NRLMSISE2 and IGRF.
 
 The pyigrf_clara.py is based on a library made by Ciaran Beggan called pyIGRF and uses its equations for calculationg the values of the IGRF model.
+ It runs on IRGF-13 but that can be changed if the user gets new coefficients in a .shc file.
 
-There is no main function but the module tudo_final.py has the basic workflow of the library. You just need to replace the name of the files and the igrf configurations to the desired one. 
+There are no tests to validate the input so beware of mistakes.
+ 
+There is no main function but the module tudo_final.py has the basic workflow of the library. You just need to replace the name of the files and the igrf configurations to the desired one to get a result for your data. 
+
+For reading IRI2020 text files in the library iri2_0_4 you must change the value in the function _ler_arq guardadado[31:] to guardadado[32:] as specified in the comments.
 
 ## Command Line Interface
 The files interface.py and cli_igrf.py are CLI interfaces. They must be executed via the terminal (obviously). The first is for calculating the conductivity the second for calculating the igrf data on a grid.
@@ -11,6 +16,9 @@ The files interface.py and cli_igrf.py are CLI interfaces. They must be executed
 ## Data
 Data compatible with this library can be found at : 
 https://ccmc.gsfc.nasa.gov/models/
+
+IRI : https://ccmc.gsfc.nasa.gov/ror/requests/IT/IRI/iri_user_registration.php
+NRLMSIS : https://ccmc.gsfc.nasa.gov/ror/requests/IT/NRLMSIS/nrlmsis_user_registration.php
 
 ## Requirements 
 **libraries:** pandas, matplotlib, scipy, numpy, geopandas ≤ 0.12.2, xarray, time
