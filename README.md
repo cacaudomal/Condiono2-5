@@ -8,7 +8,7 @@ There are no tests to validate the input so beware of mistakes.
  
 There is no main function but the module tudo_final.py has the basic workflow of the library. You just need to replace the name of the files and the igrf configurations to the desired one to get a result for your data. 
 
-For reading IRI2020 text files in the library iri2_0_4 you must change the value in the function _ler_arq guardadado[31:] to guardadado[32:] as specified in the comments.
+For reading IRI2020 text files in the library iri2_0_4 you must change the value in the function _ler_arq the variable guardadado[31:] to guardadado[32:] as specified in the comments.
 
 ## Command Line Interface
 The files interface.py and cli_igrf.py are CLI interfaces. They must be executed via the terminal (obviously). The first is for calculating the conductivity the second for calculating the igrf data on a grid.
