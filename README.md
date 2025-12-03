@@ -3,6 +3,8 @@ Python library for calculating Pedersen and Hall electric conductivity in the io
 
 The pyigrf_clara.py is based on a library made by Ciaran Beggan called pyIGRF and uses its equations for calculationg the values of the IGRF model.
 
+There is no main function but the module tudo_final.py has the basic workflow of the library. You just need to replace the name of the files and the igrf configurations to the desired one. 
+
 ## Command Line Interface
 The files interface.py and cli_igrf.py are CLI interfaces. They must be executed via the terminal (obviously). The first is for calculating the conductivity the second for calculating the igrf data on a grid.
 
