@@ -113,7 +113,7 @@ More info on the program can be found in the help section:
 
 ### Example Code
 
-**tudo_final :** example of how to calculate the conductivity for a given dataset using the codes libraries. Just change the following variables to the appro-priate file names : namefileiri, filenamemsise2, resIGRF. The output files always have the same name and may overwrite themselves if not renamed ou taken from the program file. 
+**tudo_final :** example of how to calculate the conductivity for a given dataset using the codes libraries. Just change the following variables to the appro-priate file names : namefileiri, filenamemsise2, resIGRF. The output files always have the same name and may overwrite themselves if not renamed ou taken from the program directory. 
 
 **teste_perfisdecond :** example of how to plot conductivity profiles from calculated values. 
 
