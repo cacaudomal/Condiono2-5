@@ -41,8 +41,14 @@ on the Request output data in bulk option. The data used in the paper is of the 
 
 ## Requirements
 
-**libraries:** pandas, matplotlib, scipy, numpy, geopandas ≤ 0.12.2, xarray, time
+**libraries:** 
 
+`numpy == 1.26.0
+matplotlib == 3.7.2
+scipy == 1.11.3
+pandas == 2.0.3
+geopandas <= 0.12.2
+xarray == 2023.6.0`
  
 
 ## Jupyter Notebook
