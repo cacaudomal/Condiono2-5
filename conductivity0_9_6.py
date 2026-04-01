@@ -27,7 +27,7 @@ class gyrofrequency():
         self.e = -1.602177e-19 #Electron charge [C]
 
         self.result = self.calc_all_girofreq(B)
-        
+       
         
     def calc_girofreq(self,mi,B):
         """
@@ -88,7 +88,7 @@ class gyrofrequency():
     
     
     def calc_all_girofreq(self,B) -> pd.DataFrame:        
-        print("calculando as freqcol all: start ")
+        print("Calculating all collision frequencies and girofrequency: start ")
         wi1 = self.calc_girofreq(self.mi1, B)
         wi2 = self.calc_girofreq(self.mi2, B)
         we = self.calc_girofreq(self.me, B)
@@ -174,7 +174,16 @@ class condiono_adachi():
         self.e = -1.602177e-19 #Carga do elétron [C]
         self.mi1 = 5.065e-26 #Massa do íon 1 uma mistura de NO+ (75%) e O2+ (25%) (30.5 u.m.a.) [kg]
         self.mi2 = 2.657e-26 #Massa do íon 2 (O+) [kg] (16 a.m.u)        
-    
+     
+    def read_calculatedCond(self,condHnamefile,condPnamefile):
+        self.condP = pd.read_csv(condPnamefile)
+        self.condP.sort_values(['time','ht','lat','lon'],inplace=True)
+        self.condP = self.condP.set_index(['time','ht','lat','lon'])
+        
+        self.condH = pd.read_csv(condHnamefile)
+        self.condH.sort_values(['time','ht','lat','lon'],inplace=True)
+        self.condH = self.condH.set_index(['time','ht','lat','lon'])
+        
     def _calc_pRelativa(self,rhoi,ne):
         """
         CALCULATES THE RELATIVE NUMBER DENSITY OF THE IONIC SPECIES. Brekke (1993)
@@ -402,7 +411,7 @@ class condiono_adachi():
 
         Parameters
         ----------
-        values : DATA FRAME
+        values : MULTIINDEX DATA FRAME
             DESCRIPTION.
         h : FLOAT
             HEIGHT [km].
@@ -434,12 +443,12 @@ class condiono_adachi():
 
         Parameters
         ----------
-        values : TYPE
+        values : MULTIINDEX DATA FRAME
             DESCRIPTION.
         h : FLOAT
             HEIGHT OF PLOT.
-        title : TYPE, optional
-            DESCRIPTION. The default is " ".
+        title : STRING, optional
+            NAME OF THE MAP. The default is " ".
 
         Returns
         -------
@@ -477,7 +486,7 @@ class condiono_adachi():
           Parameters
           ----------
           values : PANDA SERIES
-              VALUES TO BE INTEGRATED BY HEIGHT.
+              VALUES AT A GIVEN LAT AND LON TO BE INTEGRATED BY HEIGHT.
           h : FLOAT, optional
               maximum height for the integration. The default is 400.
 
@@ -488,10 +497,12 @@ class condiono_adachi():
 
           '''
           a = [] #list to be filled with height intratade values. cada linha é numa latitude específica e coluna uma longitude
-          print(type(values))
+          #print(type(values))
+          
           for lat in values.loc[:h,:,:].index.get_level_values('lat').unique().to_list():
               a.append( [(np.trapz(values.loc[:h,lat,lon],values.loc[:h,:,:].index.get_level_values('ht').unique())) for lon in values.loc[:h,:,:].index.get_level_values('lon').unique().to_list()])
               print()
+              
           heightintegratedcond = pd.DataFrame(a, index = values.loc[:h,:,:].index.get_level_values('lat').unique().to_list(),columns= values.loc[:h,:,:].index.get_level_values('lon').unique().to_list())
           
           return heightintegratedcond 
