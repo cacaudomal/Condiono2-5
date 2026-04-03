@@ -104,7 +104,7 @@ xarray == 2023.6.0`
 
 **interface :** contains the CLI interface functions for the conductivity calculation part of the code. To use it in the command line, in the programm directory, write:
 
-`py .\interface.py out_file_name.txt name_of_IRI_file.nc name_of_msise_file.nc name_of_igrf.csv`
+`py .\interface.py out_file_name name_of_IRI_file.nc name_of_msise_file.nc name_of_igrf.csv`
 
 **cli_pyigrf :**  contains the CLI interface of the pyigrf part of the code. To use it in the command line, in the programm directory, write:
 
